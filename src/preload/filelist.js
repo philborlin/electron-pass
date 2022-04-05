@@ -1,14 +1,14 @@
 async function getFilesFromDirectory(fs, path, directoryPath) {
   const loop = async (directoryPath, key) => {
     // const filesInDirectory = await fs.readdir(directoryPath)
-    const filesInDirectory = fs.readdirSync(directoryPath)
+    const filesInDirectory = await fs.readdir(directoryPath)
     const objs =  await Promise.all(
       filesInDirectory.
         filter(file => !(/(^|\/)\.[^\/\.]/g).test(file)).
         map(async (file, index) => {
           const filePath = path.join(directoryPath, file)
           const newKey = key + index
-          const stats = fs.statSync(filePath)
+          const stats = await fs.stat(filePath)
 
           if (stats.isDirectory()) {
             return { title: file, key: newKey, children: await loop(filePath, newKey + '-') }

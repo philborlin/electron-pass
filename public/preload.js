@@ -15,28 +15,5 @@ process.once("loaded", () => {
 });
 
 async function dir() {
-  // return getFilesFromDirectory(os.homedir() + '/.password-store')
-  // return getFilesFromDirectory(fs, path, os.homedir() + '/.password-store')
-  const files = getFilesFromDirectory(fs, path, os.homedir() + '/.password-store')
-  console.log('files', files)
-  return files
+  return getFilesFromDirectory(fs, path, os.homedir() + '/.password-store')
 }
-
-// const getFilesFromDirectory = async (directoryPath) => {
-//   const filesInDirectory = await fs.readdir(directoryPath)
-//   const files = await Promise.all(
-//     filesInDirectory.
-//       filter(file => !(/(^|\/)\.[^\/\.]/g).test(file)).
-//       map(async (file) => {
-//         const filePath = path.join(directoryPath, file)
-//         const stats = await fs.stat(filePath)
-
-//         if (stats.isDirectory()) {
-//           return getFilesFromDirectory(filePath)
-//         } else {
-//           return filePath;
-//         }
-//       })
-//   );
-//   return files.filter((file) => file.length); // return with empty arrays removed
-// }

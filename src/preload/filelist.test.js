@@ -5,14 +5,14 @@ import * as path from 'path'
 describe('getFilesFromDirectory', () => {
   const actualValue = async (files) => {
     vol.reset()
-    files.forEach(file => {
+    files.forEach(async file => {
       const dir = path.dirname(file)
       if (dir != '.' && !vol.existsSync(dir)) {
         vol.mkdirpSync(dir)
       }
       vol.closeSync(vol.openSync('/' + file, 'w'))
     });
-    return await getFilesFromDirectory(vol, path, '/')
+    return await getFilesFromDirectory(vol.promises, path, '/')
   }
 
   describe('root directory', () => {
