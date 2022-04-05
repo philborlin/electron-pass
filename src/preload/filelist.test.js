@@ -22,7 +22,7 @@ describe('getFilesFromDirectory', () => {
     })
     it('one file', async () => {
       const actual = await actualValue(['one.gpg'])
-      expect(actual).toEqual([{ title: 'one', key: '0' }])
+      expect(actual).toEqual([{ title: 'one', key: '0', path: 'one' }])
     })
     it('has a bad file', async () => {
       const actual = await actualValue(['one.gpg.tmp'])
@@ -31,8 +31,8 @@ describe('getFilesFromDirectory', () => {
     it('many files', async () => {
       const actual = await actualValue(['one.gpg', 'two.gpg'])
       expect(actual).toEqual([
-        { title: 'one', key: '0' },
-        { title: 'two', key: '1' }
+        { title: 'one', key: '0', path: 'one' },
+        { title: 'two', key: '1', path: 'two' }
       ])
     })
   })
@@ -48,11 +48,12 @@ describe('getFilesFromDirectory', () => {
         {
           title: 'foo',
           key: '0',
+          path: 'foo',
           children: [
-            { title: 'two', key: '0-0' }
+            { title: 'two', key: '0-0', path: 'foo/two' }
           ]
         },
-        { title: 'one', key: '1' }
+        { title: 'one', key: '1', path: 'one' }
       ])
     })
     it('two files on root and two files on first level', async () => {
@@ -67,13 +68,14 @@ describe('getFilesFromDirectory', () => {
         {
           title: 'foo',
           key: '0',
+          path: 'foo',
           children: [
-            { title: 'four', key: '0-0' },
-            { title: 'three', key: '0-1' },
+            { title: 'four', key: '0-0', path: 'foo/four' },
+            { title: 'three', key: '0-1', path: 'foo/three' },
           ]
         },
-        { title: 'one', key: '1' },
-        { title: 'two', key: '2' },
+        { title: 'one', key: '1', path: 'one' },
+        { title: 'two', key: '2', path: 'two' },
       ])
     })
     it('two files on root and two files on two subdirectories', async () => {
@@ -90,21 +92,23 @@ describe('getFilesFromDirectory', () => {
         {
           title: 'bar',
           key: '0',
+          path: 'bar',
           children: [
-            { title: 'five', key: '0-0' },
-            { title: 'six', key: '0-1' }
+            { title: 'five', key: '0-0', path: 'bar/five' },
+            { title: 'six', key: '0-1', path: 'bar/six' }
           ]
         },
         {
           title: 'foo',
           key: '1',
+          path: 'foo',
           children: [
-            { title: 'four', key: '1-0' },
-            { title: 'three', key: '1-1' },
+            { title: 'four', key: '1-0', path: 'foo/four' },
+            { title: 'three', key: '1-1', path: 'foo/three' },
           ]
         },
-        { title: 'one', key: '2' },
-        { title: 'two', key: '3' },
+        { title: 'one', key: '2', path: 'one' },
+        { title: 'two', key: '3', path: 'two' },
       ])
     })
   })
@@ -121,18 +125,20 @@ describe('getFilesFromDirectory', () => {
         {
           title: 'foo',
           key: '0',
+          path: 'foo',
           children: [
             {
               title: 'bar',
               key: '0-0',
+              path: 'foo/bar',
               children: [
-                { title: 'three', key: '0-0-0' },
+                { title: 'three', key: '0-0-0', path: 'foo/bar/three' },
               ]
             },
-            { title: 'two', key: '0-1' },
+            { title: 'two', key: '0-1', path: 'foo/two' },
           ]
         },
-        { title: 'one', key: '1' },
+        { title: 'one', key: '1', path: 'one' },
       ])
     })
     it('two files on each level', async () => {
@@ -149,21 +155,23 @@ describe('getFilesFromDirectory', () => {
         {
           title: 'foo',
           key: '0',
+          path: 'foo',
           children: [
             {
               title: 'bar',
               key: '0-0',
+              path: 'foo/bar',
               children: [
-                { title: 'five', key: '0-0-0' },
-                { title: 'six', key: '0-0-1' },
+                { title: 'five', key: '0-0-0', path: 'foo/bar/five' },
+                { title: 'six', key: '0-0-1', path: 'foo/bar/six' },
               ]
             },
-            { title: 'four', key: '0-1' },
-            { title: 'three', key: '0-2' },
+            { title: 'four', key: '0-1', path: 'foo/four' },
+            { title: 'three', key: '0-2', path: 'foo/three' },
           ]
         },
-        { title: 'one', key: '1' },
-        { title: 'two', key: '2' },
+        { title: 'one', key: '1', path: 'one' },
+        { title: 'two', key: '2', path: 'two' },
       ])
     })
     it('two subdirectories on each level', async () => {
@@ -185,50 +193,56 @@ describe('getFilesFromDirectory', () => {
         {
           title: 'foo',
           key: '0',
+          path: 'foo',
           children: [
             {
               title: 'bar',
               key: '0-0',
+              path: 'foo/bar',
               children: [
-                { title: 'five', key: '0-0-0' },
-                { title: 'six', key: '0-0-1' },
+                { title: 'five', key: '0-0-0', path: 'foo/bar/five' },
+                { title: 'six', key: '0-0-1', path: 'foo/bar/six' },
               ]
             },
             {
               title: 'baz',
               key: '0-1',
+              path: 'foo/baz',
               children: [
-                { title: 'eight', key: '0-1-0' },
-                { title: 'seven', key: '0-1-1' },
+                { title: 'eight', key: '0-1-0', path: 'foo/baz/eight' },
+                { title: 'seven', key: '0-1-1', path: 'foo/baz/seven' },
               ]
             },
-            { title: 'four', key: '0-2' },
-            { title: 'three', key: '0-3' },
+            { title: 'four', key: '0-2', path: 'foo/four' },
+            { title: 'three', key: '0-3', path: 'foo/three' },
           ]
         },
-        { title: 'one', key: '1' },
+        { title: 'one', key: '1', path: 'one' },
         {
           title: 'qux',
           key: '2',
+          path: 'qux',
           children: [
             {
               title: 'bar',
               key: '2-0',
+              path: 'qux/bar',
               children: [
-                { title: 'ten', key: '2-0-0' },
+                { title: 'ten', key: '2-0-0', path: 'qux/bar/ten' },
               ]
             },
             {
               title: 'baz',
               key: '2-1',
+              path: 'qux/baz',
               children: [
-                { title: 'eleven', key: '2-1-0' },
+                { title: 'eleven', key: '2-1-0', path: 'qux/baz/eleven' },
               ]
             },
-            { title: 'nine', key: '2-2' },
+            { title: 'nine', key: '2-2', path: 'qux/nine' },
           ]
         },
-        { title: 'two', key: '3' },
+        { title: 'two', key: '3', path: 'two' },
       ])
     })
   })

@@ -5,3 +5,11 @@ export async function files() {
 
   return []
 }
+
+export async function pass(path) {
+  if (window && window.pass) {
+    return await window.pass(path)
+  }
+
+  return {}
+}

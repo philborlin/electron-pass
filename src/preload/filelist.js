@@ -1,4 +1,6 @@
-async function getFilesFromDirectory(fs, path, directoryPath) {
+async function getFilesFromDirectory(fs, pathUtil, directoryPath) {
+  const firstPath = directoryPath
+
   const loop = async (directoryPath, key) => {
     // const filesInDirectory = await fs.readdir(directoryPath)
     const filesInDirectory = await fs.readdir(directoryPath)
@@ -6,14 +8,14 @@ async function getFilesFromDirectory(fs, path, directoryPath) {
       filesInDirectory.
         filter(file => !(/(^|\/)\.[^\/\.]/g).test(file)).
         map(async (file, index) => {
-          const filePath = path.join(directoryPath, file)
+          const filePath = pathUtil.join(directoryPath, file)
           const newKey = key + index
           const stats = await fs.stat(filePath)
 
           if (stats.isDirectory()) {
-            return { title: file, key: newKey, children: await loop(filePath, newKey + '-') }
+            return { title: file, key: newKey, children: await loop(filePath, newKey + '-'), path: getPath(pathUtil, firstPath, directoryPath, file) }
           } else if (file.endsWith('.gpg')) {
-            return { title: stripGPG(file), key: newKey }
+            return { title: stripGPG(file), key: newKey, path: getPath(pathUtil, firstPath, directoryPath, stripGPG(file)) }
           } else {
             return null
           }
@@ -23,6 +25,11 @@ async function getFilesFromDirectory(fs, path, directoryPath) {
   }
 
   return loop(directoryPath, '')
+}
+
+function getPath(pathUtil, firstPath, directoryPath, file) {
+  const newPath = directoryPath.substring(firstPath.length) + pathUtil.sep + file
+  return newPath.startsWith('/') ? newPath.substring(1) : newPath
 }
 
 // We only pass files that end with .gpg to this function
