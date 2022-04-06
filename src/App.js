@@ -1,23 +1,37 @@
-import './App.css';
-import 'antd/dist/antd.css';
+import { useReducer } from 'react'
+import './App.css'
+import 'antd/dist/antd.css'
 
-import { Layout } from 'antd';
+import { Layout } from 'antd'
 
-import { FileBrowser } from './components/FileBrowser';
+import { Content } from './components/Content'
+import { FileBrowser } from './components/FileBrowser'
+import { Header } from './components/Header'
 
-const { Header, Footer, Sider, Content } = Layout;
+const { Header: AntHeader, Footer, Sider, Content: AntContent } = Layout
+
+const initialState = { pass: '' };
+
+function reducer(state, action) {
+  switch (action.type) {
+    case 'pass':
+      return { pass: action.value }
+  }
+}
 
 function App() {
+  const [state, dispatch] = useReducer(reducer, initialState)
+
   return (
     <Layout>
-      <Header>Header</Header>
-      <Layout>
-        <Sider><FileBrowser /></Sider>
-        <Content>Content</Content>
+      <AntHeader><Header /></AntHeader>
+      <Layout style={{ minHeight: '100vh' }}>
+        <Sider><FileBrowser dispatch={dispatch} /></Sider>
+        <AntContent><Content pass={state.pass} /></AntContent>
       </Layout>
-      <Footer>Footer</Footer>
+      {/* <Footer style={{ position: "sticky", bottom: "0" }}>Footer</Footer> */}
     </Layout>
-  );
+  )
 }
 
 export default App;
